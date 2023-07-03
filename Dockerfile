@@ -46,3 +46,4 @@ RUN Rscript -e 'BiocManager::install("dasper")'
 
 # Rstudio configuration
 COPY rstudio_config /home/rstudio/.config/rstudio
+COPY fix_uid_server.sh /.
