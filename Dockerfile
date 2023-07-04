@@ -2,7 +2,7 @@ FROM bioconductor/bioconductor_docker:RELEASE_3_15
 
 # Install HTOP
 RUN apt-get update \
-    && apt-get -y install htop
+    && apt-get -y install htop nano
 
 # Install other tools
 RUN mkdir /tools \
@@ -39,7 +39,7 @@ RUN mkdir /home/grocamora \
     && ln -s /home/grocamora /home/rstudio/grocamora
 
 # Install most relevant R packages
-RUN install.r tidyverse logger foreach doSNOW
+RUN install.r tidyverse logger foreach doSNOW bookdown DT kableExtra patchwork latex2exp ggforce ggh4x viridis ggnewscale doParallel openxlsx coin roxygen2 knitr rmarkdown
 
 # Install most relevant R bioconductor packages
 RUN Rscript -e 'BiocManager::install("dasper")'
