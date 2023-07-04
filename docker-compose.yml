@@ -2,7 +2,7 @@ version: "3.9"
 services:
   bioc:
     container_name: grocamora-rstudio
-    image: "grocamora-rstudio:v1.7"
+    image: "grocamora-rstudio:v2.0"
     ports:
       - "8097:8787"
     environment:
@@ -10,4 +10,3 @@ services:
       - ROOT=TRUE
     volumes:
       - ~/.:/home/grocamora
-    command: bash -c "/fix_uid_server.sh; /init"
