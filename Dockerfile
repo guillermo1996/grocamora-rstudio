@@ -1,4 +1,4 @@
-FROM bioconductor/bioconductor_docker:latest
+FROM bioconductor/bioconductor_docker:RELEASE_3_15
 
 # Install HTOP
 RUN apt-get update \
@@ -41,7 +41,8 @@ RUN mkdir /home/grocamora \
 # Install most relevant R packages
 RUN install.r tidyverse logger foreach doSNOW bookdown DT kableExtra patchwork \
     && install.r latex2exp ggforce ggh4x viridis ggnewscale doParallel openxlsx \
-    && install.r knitr rmarkdown coin roxygen2
+    && install.r knitr rmarkdown markdown coin roxygen2
+RUN install.r ggsci 
 
 # Install most relevant R bioconductor packages
 RUN Rscript -e 'BiocManager::install("dasper")'
