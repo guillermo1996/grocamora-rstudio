@@ -1,4 +1,4 @@
-FROM bioconductor/bioconductor_docker:RELEASE_3_15
+FROM bioconductor/bioconductor_docker:devel
 
 # Install HTOP
 RUN apt-get update \
@@ -23,7 +23,12 @@ RUN cd /tools \
     && cd /
 ENV PATH="$PATH:/tools/regtools/build"
 
-RUN apt-get -y install bedtools
+RUN cd /tools \
+    && mkdir bedtools && cd bedtools \
+    && wget https://github.com/arq5x/bedtools2/releases/download/v2.31.0/bedtools.static \
+    && mv bedtools.static bedtools && chmod a+x bedtools \
+    && cd /
+ENV PATH="$PATH:/tools/bedtools"
 
 RUN wget http://hollywood.mit.edu/burgelab/maxent/download/fordownload.tar.gz \
     && tar -xf fordownload.tar.gz && rm fordownload.tar.gz
@@ -35,8 +40,8 @@ RUN apt-get -y install tesseract-ocr \
     && pip3 install pymupdf pytest fontTools
 
 # Sync with grocamora
-RUN mkdir /home/grocamora \
-    && ln -s /home/grocamora /home/rstudio/grocamora
+#RUN mkdir /home/grocamora \
+#    && ln -s /home/grocamora /home/rstudio/grocamora
 
 # Install most relevant R packages
 RUN install.r tidyverse logger foreach doSNOW bookdown DT kableExtra patchwork \
@@ -48,5 +53,5 @@ RUN install.r ggsci
 RUN Rscript -e 'BiocManager::install("dasper")'
 
 # Rstudio configuration
-COPY rstudio_config /home/rstudio/.config/rstudio
-COPY fix_uid_server.sh /.
+#COPY rstudio_config /home/rstudio/.config/rstudio
+#COPY fix_uid_server.sh /.
