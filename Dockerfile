@@ -1,4 +1,4 @@
-FROM bioconductor/bioconductor_docker:devel
+FROM bioconductor/bioconductor_docker:RELEASE_3_16-R-4.2.3
 
 # Install HTOP
 RUN apt-get update \
@@ -50,6 +50,7 @@ RUN install.r tidyverse logger foreach doSNOW bookdown DT kableExtra patchwork \
 RUN install.r ggsci 
 
 # Install most relevant R bioconductor packages
+RUN Rscript -e 'BiocManager::install()'
 RUN Rscript -e 'BiocManager::install("dasper")'
 
 # Rstudio configuration
