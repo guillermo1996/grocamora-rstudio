@@ -1,4 +1,0 @@
-docker run -it -d --name grocamora-rstudio -p 8917:8787 -e PASSWORD=bioc -e ROOT=TRUE -v ~/.:/home/grocamora/ lorddifre/grocamora-rstudio:latest bash -c "/fix_uid_server.sh; /init"
-docker run -it --rm --name grocamora-rstudio -p 8097:8787 -e PASSWORD=bioc -e ROOT=TRUE -v ~/.:/home/grocamora/ grocamora-rstudio:v2.3 bash -c "/fix_permissions.sh; /init"
-docker run -it --rm --name test_rstudio -p 8917:8787 -e PASSWORD=bioc -e ROOT=TRUE -v ~/.:/home/grocamora/ bioconductor/bioconductor_docker:devel bash -c "/fix_uid_server.sh; /init"
-docker run -it --rm --name test_rstudio -p 8917:8787 -e PASSWORD=bioc -e USERID=1027 -e GROUPID=1028 -e ROOT=TRUE -v ~/.:/home/grocamora/ rocker/rstudio:4.3
