@@ -1,10 +1,69 @@
-FROM bioconductor/bioconductor_docker:RELEASE_3_16-R-4.2.3
+FROM ubuntu:focal
 
-# Install HTOP
+# Main R installation
+
+LABEL org.opencontainers.image.licenses="GPL-2.0-or-later" \
+      org.opencontainers.image.source="https://github.com/rocker-org/rocker-versioned2" \
+      org.opencontainers.image.vendor="Rocker Project" \
+      org.opencontainers.image.authors="Carl Boettiger <cboettig@ropensci.org>"
+
+ENV R_VERSION=4.2.1
+ENV R_HOME=/usr/local/lib/R
+ENV TZ=Etc/UTC
+
+COPY rocker_scripts /rocker_scripts
+
+RUN /rocker_scripts/install_R_source.sh
+
+ENV CRAN=https://cran.rstudio.com
+ENV LANG=en_US.UTF-8
+
+RUN /rocker_scripts/setup_R.sh
+
+# Main RStudio installation
+
+ENV S6_VERSION=v2.1.0.2
+ENV RSTUDIO_VERSION=2023.06.1+524
+ENV DEFAULT_USER=rstudio
+ENV PANDOC_VERSION=default
+ENV QUARTO_VERSION=default
+
+RUN /rocker_scripts/install_rstudio.sh
+RUN /rocker_scripts/install_pandoc.sh
+RUN /rocker_scripts/install_quarto.sh
+RUN /rocker_scripts/install_tidyverse.sh
+
+EXPOSE 8787
+
+# Main Bioconductor installation
+ARG BIOCONDUCTOR_VERSION=3.15
+ARG BIOCONDUCTOR_PATCH=27
+ARG BIOCONDUCTOR_DOCKER_VERSION=${BIOCONDUCTOR_VERSION}.${BIOCONDUCTOR_PATCH}
+
+##  Add Bioconductor system dependencies
+COPY bioc_scripts /bioc_scripts
+RUN /bioc_scripts/install_bioc_sysdeps.sh
+RUN echo "R_LIBS=/usr/local/lib/R/host-site-library:\${R_LIBS}" > /usr/local/lib/R/etc/Renviron.site
+RUN R -f /bioc_scripts/install.R
+
+## Variables in Renviron.site are made available inside of R.
+## Add libsbml CFLAGS
+RUN  echo BIOCONDUCTOR_VERSION=${BIOCONDUCTOR_VERSION} >> /usr/local/lib/R/etc/Renviron.site \
+    && echo BIOCONDUCTOR_DOCKER_VERSION=${BIOCONDUCTOR_DOCKER_VERSION} >> /usr/local/lib/R/etc/Renviron.site \
+    && echo 'LIBSBML_CFLAGS="-I/usr/include"' >> /usr/local/lib/R/etc/Renviron.site \
+    && echo 'LIBSBML_LIBS="-lsbml"' >> /usr/local/lib/R/etc/Renviron.site
+
+ENV LIBSBML_CFLAGS="-I/usr/include"
+ENV LIBSBML_LIBS="-lsbml"
+ENV BIOCONDUCTOR_DOCKER_VERSION=$BIOCONDUCTOR_DOCKER_VERSION
+ENV BIOCONDUCTOR_VERSION=$BIOCONDUCTOR_VERSION
+
+# Main Custom installation
+## Install HTOP
 RUN apt-get update \
-    && apt-get -y install htop nano
+    && apt-get -y install htop nano 
 
-# Install other tools
+## Install other tools
 RUN mkdir /tools \
     && git clone https://github.com/eddelbuettel/littler.git tools/littler/
 ENV PATH="$PATH:/tools/littler/inst/examples"
@@ -33,26 +92,16 @@ ENV PATH="$PATH:/tools/bedtools"
 RUN wget http://hollywood.mit.edu/burgelab/maxent/download/fordownload.tar.gz \
     && tar -xf fordownload.tar.gz && rm fordownload.tar.gz
     
-# Install tesseract-OCR
+## Install tesseract-OCR
 RUN apt-get -y install tesseract-ocr \
     && apt-get -y install libtesseract-dev \
     && pip3 install pytesseract \
     && pip3 install pymupdf pytest fontTools
 
-# Sync with grocamora
-#RUN mkdir /home/grocamora \
-#    && ln -s /home/grocamora /home/rstudio/grocamora
+## Install custom packages
+COPY custom_scripts /custom_scripts
+RUN bash /custom_scripts/install_packages.sh
+RUN R -f /custom_scripts/install_biocpackages.R
 
-# Install most relevant R packages
-RUN install.r tidyverse logger foreach doSNOW bookdown DT kableExtra patchwork \
-    && install.r latex2exp ggforce ggh4x viridis ggnewscale doParallel openxlsx \
-    && install.r knitr rmarkdown markdown coin roxygen2
-RUN install.r ggsci 
-
-# Install most relevant R bioconductor packages
-RUN Rscript -e 'BiocManager::install()'
-RUN Rscript -e 'BiocManager::install("dasper")'
-
-# Rstudio configuration
-#COPY rstudio_config /home/rstudio/.config/rstudio
-#COPY fix_uid_server.sh /.
+## Init command for s6-overlay
+CMD ["/init"]
