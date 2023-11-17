@@ -45,9 +45,6 @@ install2.r --error --skipinstalled -n "$NCPUS" \
 ## dplyr database backends
 install2.r --error --skipmissing --skipinstalled -n "$NCPUS" \
     arrow \
-    dbplyr \
-    DBI \
-    dtplyr \
     nycflights13 \
     Lahman \
     RMariaDB \
