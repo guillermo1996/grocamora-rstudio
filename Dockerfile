@@ -32,14 +32,24 @@ RUN /rocker_scripts/install_tidyverse.sh
 
 EXPOSE 8787
 
-# Bioconductor installation
-ENV BIOCONDUCTOR_VERSION=3.18 
+# Bioconductor installation (dasper not supported above 3.17)
+ENV BIOCONDUCTOR_VERSION=3.17  
 
 COPY bioc_scripts /bioc_scripts
 RUN /bioc_scripts/install_bioc_sysdeps.sh $BIOCONDUCTOR_VERSION
 
-# Custom installation
+## Variables in Renviron.site are made available inside of R.
+## Add libsbml CFLAGS
+RUN  echo BIOCONDUCTOR_VERSION=${BIOCONDUCTOR_VERSION} >> /usr/local/lib/R/etc/Renviron.site \
+    && echo 'LIBSBML_CFLAGS="-I/usr/include"' >> /usr/local/lib/R/etc/Renviron.site \
+    && echo 'LIBSBML_LIBS="-lsbml"' >> /usr/local/lib/R/etc/Renviron.site
 
+ENV LIBSBML_CFLAGS="-I/usr/include"
+ENV LIBSBML_LIBS="-lsbml"
+
+# Custom installation
+COPY custom_scripts /custom_scripts
+RUN /custom_scripts/install_packages.sh
 
 ## Init command for s6-overlay
-# CMD ["/init"]
+CMD ["/init"]

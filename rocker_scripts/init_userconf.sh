@@ -206,3 +206,7 @@ if [ "$LANG" != "en_US.UTF-8" ]; then
     /usr/sbin/locale-gen --lang "$LANG"
     /usr/sbin/update-locale --reset LANG="$LANG"
 fi
+
+## Quality of life features. It download my optimal RStudio configs from github and install them.
+runuser -l $USER -c "ln -s /home/*"
+runuser -l $USER -c "svn checkout https://github.com/guillermo1996/grocamora-rstudio/trunk/rstudio_config /home/$USER/.config/rstudio/"
