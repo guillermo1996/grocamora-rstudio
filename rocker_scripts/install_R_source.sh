@@ -97,8 +97,8 @@ apt-get install -y --no-install-recommends ${BUILDDEPS}
 
 ## Download R from 0-Cloud CRAN mirror or CRAN
 function download_r_src() {
-    wget "https://cloud.r-project.org/src/$1" -O "R.tar.gz" ||
-        wget "https://cran.r-project.org/src/$1" -O "R.tar.gz"
+    wget -q "https://cloud.r-project.org/src/$1" -O "R.tar.gz" ||
+        wget -q "https://cran.r-project.org/src/$1" -O "R.tar.gz"
 }
 
 if [ "$R_VERSION" == "devel" ]; then

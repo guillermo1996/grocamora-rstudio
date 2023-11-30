@@ -64,6 +64,8 @@ apt-get install -y --no-install-recommends \
     liblzma-dev \
     libx11-dev \
     libxt-dev \
+    liblz4-dev \
+    libzstd-dev \
     perl \
     rsync \
     subversion \

@@ -10,7 +10,6 @@ install2.r --error --skipinstalled -n "$NCPUS" \
     doSNOW \
     bookdown \
     DT \
-    kableExtra \
     patchwork \
     latex2exp \
     ggforce \
@@ -25,11 +24,20 @@ install2.r --error --skipinstalled -n "$NCPUS" \
     roxygen2 \
     ggsci \
     gridExtra \
-    zeallot
+    zeallot \
+    caret \
+    Hmisc \
+    factoextra \
+    janitor \
+    optparse \
+    RhpcBLASctl \
+    DGEobj.utils
 
 # Custom packages
 R -q -e 'devtools::install_github("https://github.com/guillermo1996/grpSciRmdTheme")'
 R -q -e 'install.packages("datapasta", repos = c(mm = "https://milesmcbain.r-universe.dev", getOption("repos")))'
+R -q -e 'devtools::install_github("kupietz/kableExtra")'
 
 # Custom BiocParallel packages
 R -q -e 'BiocManager::install(c("dasper", "rtracklayer", "DESeq2", "DEGreport", "tximport", "pcaExplorer", "sva", "limma", "edgeR", "DESeq2"))'
+R -q -e 'BiocManager::install(c("variancePartition"))'

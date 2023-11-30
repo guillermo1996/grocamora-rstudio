@@ -207,6 +207,11 @@ if [ "$LANG" != "en_US.UTF-8" ]; then
     /usr/sbin/update-locale --reset LANG="$LANG"
 fi
 
+## Let user shell be /bin/bash
+usermod --shell /bin/bash $USER
+
+## Remove sudo prompt
+runuser -l $USER -c "touch ~/.sudo_as_admin_successful"
+
 ## Quality of life features. It download my optimal RStudio configs from github and install them.
 runuser -l $USER -c "ln -s /home/*"
-runuser -l $USER -c "svn checkout https://github.com/guillermo1996/grocamora-rstudio/trunk/rstudio_config /home/$USER/.config/rstudio/"

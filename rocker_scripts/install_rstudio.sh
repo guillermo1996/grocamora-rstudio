@@ -51,7 +51,7 @@ ARCH=$(dpkg --print-architecture)
 DOWNLOAD_FILE=rstudio-server.deb
 UBUNTU_CODENAME="focal"
 
-wget "https://download2.rstudio.org/server/${UBUNTU_CODENAME}/${ARCH}/rstudio-server-${RSTUDIO_VERSION/"+"/"-"}-${ARCH}.deb" -O "$DOWNLOAD_FILE"
+wget -q "https://download2.rstudio.org/server/${UBUNTU_CODENAME}/${ARCH}/rstudio-server-${RSTUDIO_VERSION/"+"/"-"}-${ARCH}.deb" -O "$DOWNLOAD_FILE"
 
 dpkg -i "$DOWNLOAD_FILE"
 rm "$DOWNLOAD_FILE"

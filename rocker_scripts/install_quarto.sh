@@ -61,7 +61,7 @@ if [ "$QUARTO_VERSION" != "$INSTALLED_QUARTO_VERSION" ]; then
         else
             QUARTO_DL_URL="https://github.com/quarto-dev/quarto-cli/releases/download/v${QUARTO_VERSION}/quarto-${QUARTO_VERSION}-linux-${ARCH}.deb"
         fi
-        wget "$QUARTO_DL_URL" -O quarto.deb
+        wget -q "$QUARTO_DL_URL" -O quarto.deb
         dpkg -i quarto.deb
         rm quarto.deb
     fi
