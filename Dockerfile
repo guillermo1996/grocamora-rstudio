@@ -17,7 +17,7 @@ RUN ./install_R.sh
 # RStudio installation
 ## Enviroment variables
 ENV S6_VERSION=v2.1.0.2
-ENV RSTUDIO_VERSION=2023.09.1+494
+ENV RSTUDIO_VERSION=2023.12.0+369
 ENV DEFAULT_USER=rstudio
 ENV PANDOC_VERSION=default
 ENV QUARTO_VERSION=default
@@ -28,7 +28,8 @@ ENV OMP_NUM_THREADS=1
 COPY rocker_scripts /rocker_scripts
 RUN rocker_scripts/setup_R.sh
 
-RUN /rocker_scripts/install_rstudio.sh
+COPY rstudio_config /rstudio_config
+RUN /rocker_scripts/install_rstudio.sh 
 RUN /rocker_scripts/install_pandoc.sh
 RUN /rocker_scripts/install_quarto.sh
 RUN /rocker_scripts/install_tidyverse.sh
@@ -69,17 +70,3 @@ RUN /custom_scripts/custom_configuration.sh
 ## Init command for s6-overlay
 EXPOSE 8787
 CMD ["/init"]
-
-# Issues...
-#
-# 1. FIXED! VariancePartition works like shit and uses multithread when it shouldn't... 
-#  library(variancePartition)
-#  a <- readRDS("/home/Downloads/counts_test.rds")
-#  b <- readRDS("/home/Downloads/formula_test.rds")
-#  c <- readRDS("/home/Downloads/meta.varpar.in.rds")
-#
-#  set.seed(0)
-#  d <- a[sample(1:16000, 1000), ]
-#  varpart <- variancePartition::fitExtractVarPartModel(d, b, c, BPPARAM = BiocParallel::SerialParam(progressbar = T))
-
-# 2. The user settings are removed everytime the container starts and stops... which basically sucks hard... Need to find another way...

@@ -23,10 +23,12 @@ else
 EOF
 
     ## Download default settings from https://github.com/guillermo1996/grocamora-rstudio
-    svn checkout --force https://github.com/guillermo1996/grocamora-rstudio/trunk/rstudio_config /home/${DEFAULT_USER}/.config/rstudio/
-    svn revert -R /home/${DEFAULT_USER}/.config/rstudio/
-    mkdir -p /home/${DEFAULT_USER}/.local/share/rstudio/monitored/lists/
-    cp /home/${DEFAULT_USER}/.config/rstudio/user_dictionary /home/${DEFAULT_USER}/.local/share/rstudio/monitored/lists/
+    mv /rstudio_config/* /home/${DEFAULT_USER}/.config/rstudio/
+    rm -rf /rstudio_config
+    #svn checkout --force https://github.com/guillermo1996/grocamora-rstudio/trunk/rstudio_config /home/${DEFAULT_USER}/.config/rstudio/
+    #svn revert -R /home/${DEFAULT_USER}/.config/rstudio/
+    #mkdir -p /home/${DEFAULT_USER}/.local/share/rstudio/monitored/lists/
+    #cp /home/${DEFAULT_USER}/.config/rstudio/user_dictionary /home/${DEFAULT_USER}/.local/share/rstudio/monitored/lists/
 
     chown -R "${DEFAULT_USER}:${DEFAULT_USER}" "/home/${DEFAULT_USER}"
 

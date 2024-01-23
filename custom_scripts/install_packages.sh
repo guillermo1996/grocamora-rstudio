@@ -31,7 +31,8 @@ install2.r --error --skipinstalled -n "$NCPUS" \
     janitor \
     optparse \
     RhpcBLASctl \
-    DGEobj.utils
+    DGEobj.utils \
+    styler
 
 # Custom packages
 R -q -e 'devtools::install_github("https://github.com/guillermo1996/grpSciRmdTheme")'
@@ -39,5 +40,6 @@ R -q -e 'install.packages("datapasta", repos = c(mm = "https://milesmcbain.r-uni
 R -q -e 'devtools::install_github("kupietz/kableExtra")'
 
 # Custom BiocParallel packages
-R -q -e 'BiocManager::install(c("dasper", "rtracklayer", "DESeq2", "DEGreport", "tximport", "pcaExplorer", "sva", "limma", "edgeR", "DESeq2"))'
+R -q -e 'BiocManager::install(c("rtracklayer", "DESeq2", "DEGreport", "tximport", "pcaExplorer", "sva", "limma", "edgeR", "DESeq2"))'
+R -q -e 'BiocManager::install("guillermo1996/dasper")'
 R -q -e 'BiocManager::install(c("variancePartition"))'

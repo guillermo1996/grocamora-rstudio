@@ -7,3 +7,8 @@ set -e
 ### https://github.com/rstudio/rstudio/issues/10641
 ### https://github.com/rstudio/rstudio/issues/9969
 echo "local({if(require("RhpcBLASctl", quietly=TRUE)){blas_set_num_threads(${OMP_NUM_THREADS})}})" >> ${R_HOME}/etc/Rprofile.site
+
+## Add user dictionary to RStudio
+mkdir -p /home/${DEFAULT_USER}/.local/share/rstudio/monitored/lists/
+cp /home/${DEFAULT_USER}/.config/rstudio/user_dictionary /home/${DEFAULT_USER}/.local/share/rstudio/monitored/lists/
+chown -R "${DEFAULT_USER}:${DEFAULT_USER}" "/home/${DEFAULT_USER}/.local"
