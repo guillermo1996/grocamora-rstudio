@@ -146,18 +146,3 @@ echo -e "Check the R info...\n"
 R -q -e "sessionInfo()"
 
 echo -e "\nInstall R from source, done!"
-
-# ./configure \
-#     --prefix=${R_home} \
-#     --enable-R-shlib \
-#     --enable-memory-profiling \
-#     --with-blas \
-#     --with-lapack
-# make
-# make install
-# make clean
-
-# sudo ln -s /opt/R/${R_VERSION}/bin/R /usr/local/bin/R
-# sudo ln -s /opt/R/${R_VERSION}/bin/Rscript /usr/local/bin/Rscript
-
-# chmod -R 777 /opt/R/${R_VERSION}/lib/R

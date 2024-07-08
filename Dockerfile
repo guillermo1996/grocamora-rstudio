@@ -17,7 +17,7 @@ RUN ./install_R.sh
 # RStudio installation
 ## Enviroment variables
 ENV S6_VERSION=v2.1.0.2
-ENV RSTUDIO_VERSION=2023.12.0+369
+ENV RSTUDIO_VERSION=2024.04.2+764
 ENV DEFAULT_USER=rstudio
 ENV PANDOC_VERSION=default
 ENV QUARTO_VERSION=default
@@ -28,7 +28,6 @@ ENV OMP_NUM_THREADS=1
 COPY rocker_scripts /rocker_scripts
 RUN rocker_scripts/setup_R.sh
 
-COPY rstudio_config /rstudio_config
 RUN /rocker_scripts/install_rstudio.sh 
 RUN /rocker_scripts/install_pandoc.sh
 RUN /rocker_scripts/install_quarto.sh
@@ -36,7 +35,7 @@ RUN /rocker_scripts/install_tidyverse.sh
 
 # Bioconductor installation
 ## Set Bioc version (dasper not supported above 3.17)
-ENV BIOCONDUCTOR_VERSION=3.17  
+ENV BIOCONDUCTOR_VERSION=3.18
 
 ## Install BiocManager
 COPY bioc_scripts /bioc_scripts
@@ -52,8 +51,14 @@ ENV LIBSBML_LIBS="-lsbml"
 
 # Custom installations
 ## Install custom packages to get a complete R version
-COPY /custom_scripts/install_packages.sh /custom_scripts/install_packages.sh
-RUN /custom_scripts/install_packages.sh
+COPY /custom_scripts/install_basic_packages.sh /custom_scripts/install_basic_packages.sh
+RUN /custom_scripts/install_basic_packages.sh
+
+COPY /custom_scripts/install_custom_packages.sh /custom_scripts/install_custom_packages.sh
+RUN /custom_scripts/install_custom_packages.sh
+
+COPY /custom_scripts/install_beta_packages.sh /custom_scripts/install_beta_packages.sh
+RUN /custom_scripts/install_beta_packages.sh
 
 ## Instal custom programs
 ENV SAMTOOLS_VERSION=1.17
@@ -63,7 +68,12 @@ ENV BEDTOOLS_VERSION=2.31.0
 COPY /custom_scripts/install_programs.sh /custom_scripts/install_programs.sh
 RUN /custom_scripts/install_programs.sh
 
+### Install leafcutter
+COPY /custom_scripts/install_leafcutter.sh /custom_scripts/install_leafcutter.sh
+RUN /custom_scripts/install_leafcutter.sh
+
 ## Add custom configurations
+COPY rstudio_config /rstudio_config
 COPY /custom_scripts/custom_configuration.sh /custom_scripts/custom_configuration.sh 
 RUN /custom_scripts/custom_configuration.sh
 

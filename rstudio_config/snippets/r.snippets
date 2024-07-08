@@ -5,15 +5,17 @@ snippet header
 	##
 	## Aim: 
 	##
-	## Author: Mr. Guillermo Rocamora Pérez
+	## Author: Guillermo Rocamora Pérez
 	##
-	## Date Created: 
+	## Contributors: 
+	##
+	## Date Created: `r paste(Sys.Date())`
 	##
 	## Copyright (c) Guillermo Rocamora Pérez, year
 	##
 	## Email: guillermorocamora@gmail.com
 	##
-	## Latest version: v1.0 (01/01/1970)
+	## Latest version: v1.0 (`r paste(Sys.Date())`)
 	## 
 	## _________________________________________________
 	##
@@ -23,6 +25,61 @@ snippet header
 	##
 	## - Please contact guillermorocamora@gmail.com for further assistance.
 	## _________________________________________________
+
+snippet load_setup
+	############################################################################## #
+	# ---- 0. Setup ----
+	
+	#----------------------------------------------------------------------------- #
+	## 0.1 Required Libraries ----
+	shhh <- suppressPackageStartupMessages
+	shhh(library(readxl))
+	shhh(library(foreach))
+	shhh(library(doParallel))
+	shhh(library(optparse))
+	shhh(library(tidyverse))
+	
+	## Package options - these are some examples and do not modify the script usage.
+	options(dplyr.summarise.inform = FALSE)
+	options(lifecycle_verbosity = "warning")
+	options(readr.show_progress = F)
+	options(readr.show_col_types = F)
+	
+	#----------------------------------------------------------------------------- #
+	## 0.2 Script Paths ----
+	main_path <- "" # here::here()
+	
+	### Input Paths
+	
+	### Output Paths
+	
+	#### Create output directory
+	# dir.create(results_path, showWarnings = F, recursive = T)
+	
+	#----------------------------------------------------------------------------- #
+	## 0.3 Script Parameters ----
+	
+	#----------------------------------------------------------------------------- #
+	## 0.4 User Input arguments ----
+	
+	### G: All parameters should be changeable in Section '0.3 Script Parameters',
+	### but the user may want to pass arguments when calling the script using
+	### 'Rscript script.R --argument value'. To do so, use the following 'optparse'
+	### template.
+	#option_list = list(
+	#  make_option(c("-t", "--test"), default = NULL, type = "double", help = "test")
+	#)
+	#
+	#opt_parser = OptionParser(option_list = option_list)
+	#opt = parse_args(opt_parser)
+	#
+	#if(!is.null(opt$test)) test = opt$test
+	
+	#----------------------------------------------------------------------------- #
+	## 0.5 Helper Functions ----
+
+	############################################################################## #
+	# ---- 1. Section 1 of the script ----
 
 snippet load_lib
 	# Initial setup ----

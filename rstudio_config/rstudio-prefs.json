@@ -50,5 +50,10 @@
     "show_rmd_render_command": true,
     "spelling_dictionary_language": "en_GB",
     "posix_terminal_shell": "bash",
-    "terminal_bell_style": "none"
+    "terminal_bell_style": "none",
+    "default_project_location": "~/grocamora/RytenLab-Research",
+    "source_with_echo": true,
+    "indent_guides": "gray",
+    "editor_theme": "Tomorrow Night Bright",
+    "rmd_preferred_template_path": "/usr/local/lib/R/site-library/grpRmdTemplate/rmarkdown/templates/basic_markdown"
 }
