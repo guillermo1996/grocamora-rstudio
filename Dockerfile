@@ -17,7 +17,7 @@ RUN ./install_R.sh
 # RStudio installation
 ## Enviroment variables
 ENV S6_VERSION=v2.1.0.2
-ENV RSTUDIO_VERSION=2024.04.2+764
+ENV RSTUDIO_VERSION=2024.09.0+375
 ENV DEFAULT_USER=rstudio
 ENV PANDOC_VERSION=default
 ENV QUARTO_VERSION=default
