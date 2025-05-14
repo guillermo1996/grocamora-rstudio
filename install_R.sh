@@ -2,15 +2,19 @@
 
 ## Install R from source.
 ##
-## Based on https://github.com/rocker-org/rocker-versioned2/blob/master/scripts/install_R_source.sh
+## In order of preference, first argument of the script, the R_VERSION variable.
+## ex. latest, devel, patched, 4.0.0
+##
+## 'devel' means the prerelease development version (Latest daily snapshot of development version).
+## 'patched' means the prerelease patched version (Latest daily snapshot of patched version).
 
 set -e
 
-R_VERSION=$R_VERSION
-R_HOME=$R_HOME
+R_VERSION=${1:-${R_VERSION:-"latest"}}
+R_HOME=${R_HOME:-"/usr/local/lib/R"}
 
+# shellcheck source=/dev/null
 source /etc/os-release
-export DEBIAN_FRONTEND=noninteractive
 
 apt-get update
 apt-get -y install locales
@@ -19,6 +23,9 @@ apt-get -y install locales
 LANG=${LANG:-"en_GB.UTF-8"}
 /usr/sbin/locale-gen --lang "${LANG}"
 /usr/sbin/update-locale --reset LANG="${LANG}"
+
+export DEBIAN_FRONTEND=noninteractive
+READLINE_VERSION=8
 
 apt-get install -y --no-install-recommends \
     bash-completion \
@@ -37,20 +44,20 @@ apt-get install -y --no-install-recommends \
     libjpeg-turbo* \
     libpangocairo-* \
     libpng16* \
-    libreadline8 \
+    "libreadline${READLINE_VERSION}" \
     libtiff* \
     liblzma* \
+    libxt6 \
     make \
+    nano \
     tzdata \
     unzip \
     zip \
     zlib1g
 
-apt-get install -y --no-install-recommends \
-    curl \
+BUILDDEPS="curl \
     default-jdk \
     devscripts \
-    nano \
     libbz2-dev \
     libcairo2-dev \
     libcurl4-openssl-dev \
@@ -64,8 +71,6 @@ apt-get install -y --no-install-recommends \
     liblzma-dev \
     libx11-dev \
     libxt-dev \
-    liblz4-dev \
-    libzstd-dev \
     perl \
     rsync \
     subversion \
@@ -82,16 +87,28 @@ apt-get install -y --no-install-recommends \
     xfonts-base \
     xvfb \
     wget \
-    zlib1g-dev
-    
-# Download and install R from source.
-# https://docs.posit.co/resources/install-r-source/#specify-r-version
-sed -i.bak "/^#.*deb-src.*universe$/s/^# //g" /etc/apt/sources.list
-apt-get update
-apt-get -y build-dep r-base
+    zlib1g-dev"
 
-curl -o "R.tar.gz" https://cran.rstudio.com/src/base/R-4/R-${R_VERSION}.tar.gz
-tar -xzf "R.tar.gz"
+# shellcheck disable=SC2086
+apt-get install -y --no-install-recommends ${BUILDDEPS}
+
+## Download R from 0-Cloud CRAN mirror or CRAN
+function download_r_src() {
+    wget "https://cloud.r-project.org/src/$1" -O "R.tar.gz" ||
+        wget "https://cran.r-project.org/src/$1" -O "R.tar.gz"
+}
+
+if [ "$R_VERSION" == "devel" ]; then
+    download_r_src "base-prerelease/R-devel.tar.gz"
+elif [ "$R_VERSION" == "patched" ]; then
+    download_r_src "base-prerelease/R-latest.tar.gz"
+elif [ "$R_VERSION" == "latest" ]; then
+    download_r_src "base/R-latest.tar.gz"
+else
+    download_r_src "base/R-${R_VERSION%%.*}/R-${R_VERSION}.tar.gz"
+fi
+
+tar xzf "R.tar.gz"
 cd R-*/
 
 R_PAPERSIZE=letter \
@@ -122,6 +139,7 @@ make clean
 mkdir -p "${R_HOME}/site-library"
 chown root:staff "${R_HOME}/site-library"
 chmod g+ws "${R_HOME}/site-library"
+
 ## Fix library path
 echo "R_LIBS=\${R_LIBS-'${R_HOME}/site-library:${R_HOME}/library'}" >>"${R_HOME}/etc/Renviron.site"
 

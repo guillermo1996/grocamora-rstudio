@@ -39,4 +39,9 @@ install2.r --error --skipinstalled -n "$NCPUS" \
     ggVennDiagram \
     glmnet \
     latticeExtra \
-    randomForest 
+    randomForest \
+    compositions \
+    rcompanion
+    
+R -q -e 'BiocManager::install(c("rtracklayer", "DESeq2", "DEGreport", "tximport", "pcaExplorer", "sva", "limma", "edgeR", "DESeq2", "ggtree"), Ncpus = '$NCPUS')'
+R -q -e 'BiocManager::install(c("AnnotationHub", "Mus.musculus", "rrvgo", "SingleCellExperiment", "clusterProfiler", "EnsDb.Hsapiens.v86", "org.Hs.eg.db", "org.Mm.eg.db", "DirichletMultinomial", "fgsea", "KEGGgraph", "GenomicState", "recount"), Ncpus = '$NCPUS')'

@@ -65,14 +65,14 @@ if [ "$PANDOC_VERSION" != "$INSTALLED_PANDOC_VERSION" ]; then
         else
             PANDOC_DL_URL="https://github.com/jgm/pandoc/releases/download/${PANDOC_VERSION}/pandoc-${PANDOC_VERSION}-1-${ARCH}.deb"
         fi
-        wget -q "$PANDOC_DL_URL" -O pandoc.deb
+        wget "$PANDOC_DL_URL" -O pandoc.deb
         dpkg -i pandoc.deb
         rm pandoc.deb
     fi
 
     ## Symlink pandoc & standard pandoc templates for use system-wide
     PANDOC_TEMPLATES_VERSION=$(pandoc -v | grep -oP "(?<=pandoc\s)[0-9\.]+$")
-    wget -q "https://github.com/jgm/pandoc-templates/archive/${PANDOC_TEMPLATES_VERSION}.tar.gz" -O pandoc-templates.tar.gz
+    wget "https://github.com/jgm/pandoc-templates/archive/${PANDOC_TEMPLATES_VERSION}.tar.gz" -O pandoc-templates.tar.gz
     rm -fr /opt/pandoc/templates
     mkdir -p /opt/pandoc/templates
     tar xvf pandoc-templates.tar.gz

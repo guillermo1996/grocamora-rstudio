@@ -29,7 +29,7 @@ apt_install wget ca-certificates
 if [ -f "/rocker_scripts/.s6_version" ] && [ "$S6_VERSION" = "$(cat /rocker_scripts/.s6_version)" ]; then
     echo "S6 already installed"
 else
-    wget -q -P /tmp/ "https://github.com/just-containers/s6-overlay/releases/download/${S6_VERSION}/${DOWNLOAD_FILE}"
+    wget -P /tmp/ "https://github.com/just-containers/s6-overlay/releases/download/${S6_VERSION}/${DOWNLOAD_FILE}"
 
     ## need the modified double tar now, see https://github.com/just-containers/s6-overlay/issues/288
     tar hzxf /tmp/$DOWNLOAD_FILE -C / --exclude=usr/bin/execlineb

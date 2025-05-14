@@ -18,16 +18,14 @@
     "console_double_click_select": true,
     "panes": {
         "quadrants": [
-            "Source",
-            "Console",
             "TabSet1",
-            "TabSet2"
+            "TabSet2",
+            "Source",
+            "Console"
         ],
         "tabSet1": [
             "Environment",
             "History",
-            "Build",
-            "VCS",
             "Presentation"
         ],
         "tabSet2": [
@@ -40,10 +38,12 @@
         ],
         "hiddenTabSet": [
             "Connections",
+            "Build",
+            "VCS",
             "Tutorial"
         ],
-        "console_left_on_top": false,
-        "console_right_on_top": true,
+        "console_left_on_top": true,
+        "console_right_on_top": false,
         "additional_source_columns": 0
     },
     "save_files_before_build": true,
@@ -55,5 +55,14 @@
     "source_with_echo": true,
     "indent_guides": "gray",
     "editor_theme": "Tomorrow Night Bright",
-    "rmd_preferred_template_path": "/usr/local/lib/R/site-library/grpRmdTemplate/rmarkdown/templates/basic_markdown"
+    "rmd_preferred_template_path": "/usr/local/lib/R/site-library/grpRmdTemplate/rmarkdown/templates/basic_markdown",
+    "handle_errors_in_user_code_only": false,
+    "remove_history_duplicates": true,
+    "highlight_selected_line": true,
+    "code_formatter_styler_strict": false,
+    "show_help_tooltip_on_idle": true,
+    "default_encoding": "UTF-8",
+    "code_formatter": "styler",
+    "terminal_close_behavior": "never",
+    "font_size_points": 11
 }

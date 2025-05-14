@@ -10,6 +10,7 @@
 set -e
 
 CRAN=${1:-${CRAN:-"https://cran.r-project.org"}}
+PURGE_BUILDDEPS=${PURGE_BUILDDEPS:-"true"}
 
 ARCH=$(uname -m)
 
@@ -53,9 +54,11 @@ fi
 ## Install littler
 if [ ! -x "$(command -v r)" ]; then
     BUILDDEPS="libpcre2-dev \
+        libdeflate-dev \
         liblzma-dev \
         libbz2-dev \
         zlib1g-dev \
+        libzstd-dev \
         libicu-dev"
 
     if [ "$(find /var/lib/apt/lists/* | wc -l)" = "0" ]; then
@@ -67,7 +70,9 @@ if [ ! -x "$(command -v r)" ]; then
 
     # Clean up
     # shellcheck disable=SC2086
-    apt-get remove --purge -y ${BUILDDEPS}
+    if [ "${PURGE_BUILDDEPS}" != "false" ]; then
+        apt-get remove --purge -y ${BUILDDEPS}
+    fi
     apt-get autoremove -y
     apt-get autoclean -y
 fi
@@ -89,7 +94,7 @@ rm -rf /var/lib/apt/lists/*
 # Check the R info
 echo -e "Check the littler info...\n"
 
-R --version
+r --version
 
 echo -e "Check the R info...\n"
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -ex
 apt-get update
 
 # Install samtools
@@ -36,11 +36,11 @@ mv bedtools.static bedtools
 chmod a+x bedtools
 cd /
 
-# Fordownload
-cd /tools
-wget -q "http://hollywood.mit.edu/burgelab/maxent/download/fordownload.tar.gz"
-tar -xf "fordownload.tar.gz"
-rm "fordownload.tar.gz"
+# # Fordownload
+# cd /tools
+# wget -q "http://hollywood.mit.edu/burgelab/maxent/download/fordownload.tar.gz"
+# tar -xf "fordownload.tar.gz"
+# rm "fordownload.tar.gz"
 
 # Tesseract-OCR (for text recognition in images)
 apt-get -y install tesseract-ocr libtesseract-dev
@@ -49,6 +49,6 @@ pip3 install pymupdf pytest fontTools
 
 # Add programs to /usr/bin
 ln -s /tools/bedtools/bedtools /usr/local/bin
-ln -s /tools/fordownload/score3.pl /usr/local/bin
-ln -s /tools/fordownload/score5.pl /usr/local/bin
+# ln -s /tools/fordownload/score3.pl /usr/local/bin
+# ln -s /tools/fordownload/score5.pl /usr/local/bin
 ln -s /tools/regtools-${REGTOOLS_VERSION}/build/regtools /usr/local/bin

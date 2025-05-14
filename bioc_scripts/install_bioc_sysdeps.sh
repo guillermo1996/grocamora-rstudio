@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-BIOC_VERSION=${1:-"3.19"}
+BIOC_VERSION=${1:-"3.21"}
 
 # This is to avoid the error
 # 'debconf: unable to initialize frontend: Dialog'
@@ -68,7 +68,12 @@ apt-get install -y --no-install-recommends \
 	libsasl2-dev \
 	libpoppler-cpp-dev \
 	libprotobuf-dev \
-	libpq-dev
+	libpq-dev \
+	libarchive-dev \
+	coinor-libcgl-dev \
+	coinor-libsymphony-dev \
+	coinor-libsymphony-doc \
+	libpoppler-glib-dev
 
 ## software - perl extentions and modules
 apt-get install -y --no-install-recommends \
@@ -83,11 +88,12 @@ apt-get install -y --no-install-recommends \
 ## new libs
 apt-get install -y --no-install-recommends \
 	libglpk-dev \
-	libeigen3-dev
+	libeigen3-dev \
+ 	liblz4-dev
 
 ## Databases and other software
 apt-get install -y --no-install-recommends \
-	sqlite \
+	sqlite3 \
 	openmpi-bin \
 	mpi-default-bin \
 	openmpi-common \
@@ -100,7 +106,8 @@ apt-get install -y --no-install-recommends \
 	ggobi \
 	graphviz \
 	protobuf-compiler \
-	jags
+	jags \
+	libhiredis-dev
 
 ## Additional resources
 apt-get install -y --no-install-recommends \
@@ -110,7 +117,7 @@ apt-get install -y --no-install-recommends \
 	libsbml5-dev \
 	libzmq3-dev \
 	python3-dev \
-	python3.8-venv
+	python3-venv
 
 ## More additional resources
 ## libavfilter-dev - <infinityFlow, host of other packages>
@@ -128,7 +135,13 @@ apt-get -y --no-install-recommends install \
 	ocl-icd-opencl-dev
 
 ## Python installations
-pip3 install scikit-learn pandas pyyaml
+# pip3 install scikit-learn pandas pyyaml --break-system-packages || pip3 install scikit-learn pandas pyyaml
+# Replacing old pip installation above with apt install for system-wide installations of packages given the
+# new restrictions breaking system-wide pip install
+apt-get -y --no-install-recommends install \
+        python3-pandas \
+	python3-yaml \
+        python3-sklearn
 
 ## libgdal is needed for sf
 apt-get install -y --no-install-recommends \
