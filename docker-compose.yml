@@ -1,0 +1,14 @@
+---
+services:
+  grocamora-rstudio:
+    image: lorddifre/grocamora-rstudio-r4.5.0:1.1.1
+    container_name: grocamora-rstudio-r4.5.0
+    environment:
+      - ROOT=true
+      - PASSWORD=bioc
+      - DISABLE_AUTH=true
+    volumes:
+      - /home/LordDifre/RytenLab-Research:/home/grocamora
+    ports:
+      - 8919:8787
+    restart: unless-stopped

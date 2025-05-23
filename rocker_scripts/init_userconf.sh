@@ -199,3 +199,7 @@ runuser -l $USER -c "touch ~/.sudo_as_admin_successful"
 
 ## Quality of life features. Add any other user folder to the default user home folder.
 runuser -l $USER -c "ln -s /home/*"
+
+# ## Fix timeout issue (https://docs.posit.co/ide/server-pro/admin/authenticating_users/authorization_timeout.html)
+# echo "auth-timeout-minutes=0" >> /etc/rstudio/rserver.conf
+# echo "auth-stay-signed-in-days=7" >> /etc/rstudio/rserver.conf

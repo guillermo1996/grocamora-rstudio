@@ -72,6 +72,8 @@ echo "lock-type=advisory" >/etc/rstudio/file-locks
 ## This is triggered by an env var in the user config
 cp /etc/rstudio/rserver.conf /etc/rstudio/disable_auth_rserver.conf
 echo "auth-none=1" >>/etc/rstudio/disable_auth_rserver.conf
+echo "auth-timeout-minutes=0" >>/etc/rstudio/disable_auth_rserver.conf
+echo "auth-stay-signed-in-days=7" >>/etc/rstudio/disable_auth_rserver.conf
 
 ## Set up RStudio init scripts
 mkdir -p /etc/services.d/rstudio
